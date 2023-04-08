@@ -10,10 +10,10 @@ ESP8266WiFiMulti WiFiMulti;
 HTTPClient http; // buat koneksi ke internet
 #define USE_SERIAL Serial
 
-String statusAlat = "http://192.168.87.7/sistem-parkir/alat/status?ket=1";
-String scan = "http://192.168.87.7/sistem-parkir/alat/scan?noKartu=";
-String registrasi = "http://192.168.87.7/sistem-parkir/alat/registrasi?noKartu=";
-String getQueue = "http://192.168.87.7/sistem-parkir/alat/getQueue?queue_id=";
+String statusAlat = "http://192.168.0.112/sistem-parkir/alat/status?ket=1";
+String scan = "http://192.168.0.112/sistem-parkir/alat/scan?noKartu=";
+String registrasi = "http://192.168.0.112/sistem-parkir/alat/registrasi?noKartu=";
+String getQueue = "http://192.168.0.112/sistem-parkir/alat/getQueue?queue_id=";
 
 // RFID
 // SDA > D4/SDA
@@ -43,7 +43,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 String no = "", noKartu = "", responRegistrasi = "", responStatus = "", responScan = "", responKode = "", responKet = "", queue_id = "", responQueue = "";
 
 // buzzer
-#define buzzer D1
+#define buzzer D0
 
 void setup() {
   Serial.begin(115200);   //Komunikasi baud rate
@@ -62,7 +62,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("Redmi", "12345678"); // Sesuaikan SSID dan password ini
+  WiFiMulti.addAP("Network Engineering", "satriaoye"); // Sesuaikan SSID dan password ini
 
   for (int u = 1; u <= 5; u++)
   {

@@ -16,6 +16,7 @@
 									<th>NIP</th>
 									<th>Email</th>
 									<th>Level</th>
+									<th>No. Kartu</th>
 									<th>Action</th>
 								</tr>
 							</thead>

@@ -9,7 +9,7 @@ class Alat extends CI_Controller
 		$noKartu = $this->input->get('noKartu');
 
 		$this->db->where('noKartu', $noKartu);
-		$pegawai = $this->db->get('pegawai')->row();
+		$pegawai = $this->db->get('user')->row();
 
 		if (!$pegawai) {
 			$data = [
@@ -185,7 +185,7 @@ class Alat extends CI_Controller
 					echo 'Selesai';
 				}
 			} else {
-				echo `Tidak ada scan $act`;
+				echo 'Tidak ada scan ' . $act;
 			}
 		}
 	}
@@ -214,7 +214,7 @@ class Alat extends CI_Controller
 				$this->upload->initialize($config);
 
 				if (!$this->upload->do_upload('imageFile')) {
-					echo 'Maaf, gambar tidak memenuhi persyaratan!';
+					echo $this->upload->display_errors();
 				} else {
 					$upload_data = $this->upload->data();
 
