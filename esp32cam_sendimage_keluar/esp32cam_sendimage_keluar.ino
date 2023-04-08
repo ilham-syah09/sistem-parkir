@@ -15,10 +15,10 @@
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
-const char* ssid = "Redmi";
-const char* password = "123456789";
+const char* ssid = "Network Engineering";
+const char* password = "satriaoye";
 
-String serverName = "192.168.40.7";   // REPLACE WITH YOUR LOCAL IP ADDRESS
+String serverName = "192.168.0.112";   // REPLACE WITH YOUR LOCAL IP ADDRESS
 //String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
 
 String serverPath = "/sistem-parkir/alat/kirimGambarKeluar";     // The default serverPath should be upload.php
@@ -46,7 +46,7 @@ WiFiClient client;
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-const int timerInterval = 30000;    // time between each HTTP POST image
+const int timerInterval = 5000;    // time between each HTTP POST image
 unsigned long previousMillis = 0;   // last time image was sent
 
 void setup() {

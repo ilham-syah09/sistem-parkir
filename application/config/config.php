@@ -25,7 +25,7 @@ date_default_timezone_set('Asia/Jakarta');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/sistem-parkir';
+$config['base_url'] = 'https://tiny-lies-see-112-78-177-216.loca.lt/sistem-parkir';
 
 /*
 |--------------------------------------------------------------------------

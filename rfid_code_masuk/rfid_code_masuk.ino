@@ -40,7 +40,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 // VCC ---------------> VV
 // GND ---------------> GND
 
-String no = "", noKartu = "", responRegistrasi = "", responStatus = "", responScan = "", responKode = "", responKet = "", queue_id = "", responQueue = "";
+String no = "", noKartu = "", responRegistrasi = "", responStatus = "", responScan = "", responKode = "", responNama = "", responKet = "", queue_id = "", responQueue = "";
 
 // buzzer
 #define buzzer D0
@@ -297,22 +297,29 @@ void handleScan() {
         delay(100);
         
         responKode = getValue(responScan, '#', 0);
-        responKet = getValue(responScan, '#', 1);
-        queue_id = getValue(responScan, '#', 2);
-
+        
         Serial.println("Respon Kode : " + responKode);
-        Serial.println("Keterangan : " + responKet);
+        
         delay(100);
         
         if (responKode == "SUKSES") {
-          responQueue = "";
+          responNama = getValue(responScan, '#', 1);
+          responKet = getValue(responScan, '#', 2);
+          queue_id = getValue(responScan, '#', 3);
+          Serial.println("Keterangan : " + responKet);
+          Serial.println("Queue ID : " + queue_id);
+          
+          responQueue = "Menunggu";
           cekQueue(queue_id, "0"); 
 
           while (responQueue == "Menunggu") {
             cekQueue(queue_id, "0");
             delay(1000);
           }
-        }   
+        } else {
+          responKet = getValue(responScan, '#', 1);
+          Serial.println("Keterangan : " + responKet);
+        }
       }
     }
     else
@@ -347,7 +354,7 @@ void handleScan() {
   }
   else if (responKode == "SUKSES")
   {
-    Serial.println(responKode + ", " + responKet);
+    Serial.println(responKode + ", " + responNama + ' ' + responKet);
 
     lcd.setCursor(0, 0);
     lcd.print(responKode);
