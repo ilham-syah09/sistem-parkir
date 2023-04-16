@@ -59,7 +59,7 @@ class Alat extends CI_Controller
 			if (!$cek) {
 				if ($act == 'masuk') {
 					$data = [
-						'metode' => $act,
+						'metode'      => 'rfid',
 						'idUser'      => $user->id,
 						'tanggal'     => $tanggal,
 						'parkirMasuk' => $jam
@@ -88,7 +88,7 @@ class Alat extends CI_Controller
 				if ($act == 'masuk') {
 					if ($cek->parkirKeluar != null) {
 						$data = [
-							'metode'      => $act,
+							'metode'      => 'rfid',
 							'idUser'      => $user->id,
 							'tanggal'     => $tanggal,
 							'parkirMasuk' => $jam
