@@ -134,6 +134,11 @@ class M_Admin extends CI_Model
 
 		return $this->db->get('presensi')->result();
 	}
+
+	public function getStatus()
+	{
+		return $this->db->get('setting')->row();
+	}
 }
 
 /* End of file M_Admin.php */
