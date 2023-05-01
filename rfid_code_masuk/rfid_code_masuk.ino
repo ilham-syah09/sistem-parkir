@@ -10,10 +10,10 @@ ESP8266WiFiMulti WiFiMulti;
 HTTPClient http; // buat koneksi ke internet
 #define USE_SERIAL Serial
 
-String statusAlat = "http://192.168.79.185/sistem-parkir/alat/status?ket=1";
-String scan = "http://192.168.79.185/sistem-parkir/alat/scan?noKartu=";
-String registrasi = "http://192.168.79.185/sistem-parkir/alat/registrasi?noKartu=";
-String getQueue = "http://192.168.79.185/sistem-parkir/alat/getQueue?queue_id=";
+String statusAlat = "http://codesolution.my.id/alat/status?ket=1";
+String scan = "http://codesolution.my.id/alat/scan?noKartu=";
+String registrasi = "http://codesolution.my.id/alat/registrasi?noKartu=";
+String getQueue = "http://codesolution.my.id/alat/getQueue?queue_id=";
 
 // RFID
 // SDA > D4/SDA

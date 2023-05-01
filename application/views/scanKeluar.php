@@ -40,7 +40,7 @@
 			<div class="animate form login_form">
 				<div class="row">
 					<div class="col-xl-12 text-center text-dark">
-						<h1>Scan Disini Untuk Masuk</h1>
+						<h1>Scan Disini Untuk Keluar</h1>
 					</div>
 					<div class="col-xl-12 text-center">
 						<div class="box-body no-padding" style="max-height:500px">
