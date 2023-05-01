@@ -15,13 +15,13 @@
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
-const char* ssid = "Network Engineering";
-const char* password = "satriaoye";
+const char* ssid = "hp murah";
+const char* password = "12345678";
 
-String serverName = "192.168.0.112";   // REPLACE WITH YOUR LOCAL IP ADDRESS
-//String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
+//String serverName = "192.168.0.112";   // REPLACE WITH YOUR LOCAL IP ADDRESS
+String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
 
-String serverPath = "/sistem-parkir/alat/kirimGambarKeluar";     // The default serverPath should be upload.php
+String serverPath = "/alat/kirimGambarKeluar";     // The default serverPath should be upload.php
 
 const int serverPort = 80;
 

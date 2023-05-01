@@ -18,10 +18,10 @@
 const char* ssid = "hp murah";
 const char* password = "12345678";
 
-String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
-//String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
+///String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
+String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
 
-String serverPath = "/sistem-parkir/alat/kirimGambarMasuk";     // The default serverPath should be upload.php
+String serverPath = "/alat/kirimGambarMasuk";     // The default serverPath should be upload.php
 
 const int serverPort = 80;
 
