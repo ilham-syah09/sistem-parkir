@@ -1,31 +1,17 @@
-/*
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp32-cam-post-image-photo-server/
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-*/
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
-
 #define FlashLed 4
-
 const char* ssid = "hp murah";
 const char* password = "12345678";
 
-///String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
+// String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
 String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
 
-String serverPath = "/alat/kirimGambarMasuk";     // The default serverPath should be upload.php
-
+String serverPath = "/alat/kirimGambarKeluar";     // The default serverPath should be upload.php     
 const int serverPort = 80;
 
 WiFiClient client;
@@ -49,14 +35,14 @@ WiFiClient client;
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-const int timerInterval = 5000;    // time between each HTTP POST image
-unsigned long previousMillis = 0;   // last time image was sent
+const int Interval = 30000;    // proses pengambilan photo interval 30 detik
+unsigned long previousMillis = 0; 
+String jsonres;
 
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
   Serial.begin(115200);
   pinMode(FlashLed, OUTPUT); digitalWrite(FlashLed, LOW); 
-
   WiFi.mode(WIFI_STA);
   Serial.println();
   Serial.print("Connecting to ");
@@ -94,12 +80,12 @@ void setup() {
 
   // init with high specs to pre-allocate larger buffers
   if(psramFound()){
-    config.frame_size = FRAMESIZE_SVGA;
-    config.jpeg_quality = 10;  //0-63 lower number means higher quality
+    config.frame_size = FRAMESIZE_VGA;
+    config.jpeg_quality = 12;  //0-63 lower number means higher quality
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_CIF;
-    config.jpeg_quality = 12;  //0-63 lower number means higher quality
+    config.frame_size = FRAMESIZE_SVGA;
+    config.jpeg_quality = 8;  //0-63 lower number means higher quality
     config.fb_count = 1;
   }
   
@@ -111,22 +97,23 @@ void setup() {
     ESP.restart();
   }
 
-  sendPhoto(); 
+  sensor_t * s = esp_camera_sensor_get();
+  s->set_framesize(s, FRAMESIZE_SVGA); //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA
 }
 
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= timerInterval) {
+  if (currentMillis - previousMillis >= Interval) {
+    Serial.println("Bersiap kirim foto ke server..");
     sendPhoto();
     previousMillis = currentMillis;
   }
 }
 
-String sendPhoto() {
-  String getAll;
-  String getBody;
+void sendPhoto() {
+  String AllData;
+  String DataBody;
   digitalWrite(FlashLed, HIGH);  //aktifkan flash light
-
   //pre capture for accurate timing
   for (int i = 0; i <= 3; i++) {
     camera_fb_t * fb = NULL;
@@ -135,6 +122,7 @@ String sendPhoto() {
         Serial.println("Camera capture failed");
         delay(1000);
         ESP.restart();
+        return;
       } 
     esp_camera_fb_return(fb);
     delay(200);
@@ -142,28 +130,32 @@ String sendPhoto() {
   
   camera_fb_t * fb = NULL;
   fb = esp_camera_fb_get();
+  
   digitalWrite(FlashLed, LOW); //nonaktifkan flash light
   
   Serial.println("Connecting to server: " + serverName);
 
   if (client.connect(serverName.c_str(), serverPort)) {
-    Serial.println("Connection successful!");    
-    String head = "--RandomNerdTutorials\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"esp32-cam.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
-    String tail = "\r\n--RandomNerdTutorials--\r\n";
-
+    Serial.println("Connection successful!");   
+     
+    String post_data = "--dataMarker\r\nContent-Disposition: form-data; name=\"imageFile\"; filename=\"_esp32Photo.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
+    String head =  post_data;
+    String boundary = "\r\n--dataMarker--\r\n";
+    //Serial.println(head);
     uint32_t imageLen = fb->len;
-    uint32_t extraLen = head.length() + tail.length();
-    uint32_t totalLen = imageLen + extraLen;
-  
+    uint32_t dataLen = head.length() + boundary.length();
+    uint32_t totalLen = imageLen + dataLen;
+    
     client.println("POST " + serverPath + " HTTP/1.1");
     client.println("Host: " + serverName);
     client.println("Content-Length: " + String(totalLen));
-    client.println("Content-Type: multipart/form-data; boundary=RandomNerdTutorials");
+    client.println("Content-Type: multipart/form-data; boundary=dataMarker");
     client.println();
     client.print(head);
   
     uint8_t *fbBuf = fb->buf;
     size_t fbLen = fb->len;
+    //Serial.println(fbLen);
     for (size_t n=0; n<fbLen; n=n+1024) {
       if (n+1024 < fbLen) {
         client.write(fbBuf, 1024);
@@ -174,36 +166,39 @@ String sendPhoto() {
         client.write(fbBuf, remainder);
       }
     }   
-    client.print(tail);
+    client.print(boundary);
     
     esp_camera_fb_return(fb);
-    
+   
     int timoutTimer = 10000;
     long startTimer = millis();
     boolean state = false;
-    
+    Serial.println("Response:");
     while ((startTimer + timoutTimer) > millis()) {
       Serial.print(".");
-      delay(100);      
+      delay(200);
+         
+      // Skip HTTP headers   
       while (client.available()) {
         char c = client.read();
         if (c == '\n') {
-          if (getAll.length()==0) { state=true; }
-          getAll = "";
+          if (AllData.length()==0) { state=true; }
+          AllData = "";
         }
-        else if (c != '\r') { getAll += String(c); }
-        if (state==true) { getBody += String(c); }
+        else if (c != '\r') { AllData += String(c); }
+        if (state==true) { DataBody += String(c); }
         startTimer = millis();
       }
-      if (getBody.length()>0) { break; }
+      if (DataBody.length()>0) { break; }
     }
-    Serial.println();
     client.stop();
-    Serial.println(getBody);
+    Serial.println(DataBody);
+    Serial.println("##############");
+    Serial.println();
+    
   }
   else {
-    getBody = "Connection to " + serverName +  " failed.";
-    Serial.println(getBody);
+    DataBody = "Connection to " + serverName +  " failed.";
+    Serial.println(DataBody);
   }
-  return getBody;
 }
