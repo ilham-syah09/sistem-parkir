@@ -19,11 +19,48 @@ class Home extends CI_Controller
 
     public function index()
     {
+        $th_ini  = $this->uri->segment(3);
+        $bln_ini = $this->uri->segment(4);
+
+        if (!$th_ini) {
+            $th_ini = $this->user->getTahunIni();
+        }
+        if (!$bln_ini) {
+            $bln_ini = $this->user->getBulanIni($th_ini);
+        }
+
         $data = [
             'title'           => 'Dashboard User',
             'sidebar'         => 'user/sidebar',
             'page'            => 'user/dashboard',
             'navbar'          => 'user/navbar',
+            'dataParkirHariIni' => $this->user->getDataParkirHariIni([
+                'idUser' => $this->dt_user->id,
+                'tanggal'   => date('Y-m-d')
+            ]),
+            'dataParkir' => $this->user->getDataParkir([
+                'idUser'      => $this->dt_user->id,
+                'YEAR(tanggal)'  => $th_ini,
+                'MONTH(tanggal)' => $bln_ini
+            ]),
+            'tahun'   => $this->user->getTahun(),
+            'th_ini'  => $th_ini,
+            'bln_ini' => $bln_ini
+        ];
+
+        $this->load->view('index', $data);
+    }
+
+    public function detail($id)
+    {
+        $data = [
+            'title'    => 'Detail Data Parkir',
+            'sidebar'  => 'user/sidebar',
+            'navbar'   => 'user/navbar',
+            'page'     => 'user/detail_data_parkir',
+            'dataParkir' => $this->user->getDataParkir([
+                'id' => $id
+            ]),
         ];
 
         $this->load->view('index', $data);

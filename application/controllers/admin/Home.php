@@ -27,7 +27,9 @@ class Home extends CI_Controller
             'page'    => 'admin/dashboard',
             'sidebar' => 'admin/sidebar',
             'navbar'  => 'admin/navbar',
-            'user'    => $this->admin->getCountUser(),
+            'mahasiswa'    => $this->admin->countUser('Mahasiswa'),
+            'tamu'    => $this->admin->countUser('Tamu'),
+            'karyawan'    => $this->admin->countUser('Karyawan'),
             'setting'  => $setting
         ];
 

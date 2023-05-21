@@ -139,6 +139,12 @@ class M_Admin extends CI_Model
 	{
 		return $this->db->get('setting')->row();
 	}
+
+	public function countUser($params)
+	{
+		$this->db->where('level', $params);
+		return $this->db->get('user')->num_rows();
+	}
 }
 
 /* End of file M_Admin.php */

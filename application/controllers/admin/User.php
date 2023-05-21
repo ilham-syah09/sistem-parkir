@@ -33,13 +33,14 @@ class User extends CI_Controller
 	public function add()
 	{
 		$data = [
-			'email'    => $this->input->post('email'),
-			'password' => password_hash('user123', PASSWORD_BCRYPT, ['const' => 14]),
-			'nama'     => $this->input->post('nama'),
-			'nip'      => $this->input->post('nip'),
-			'jk'       => $this->input->post('jk'),
-			'level'    => $this->input->post('level'),
-			'noKartu'  => $this->input->post('noKartu')
+			'email'    	=> $this->input->post('email'),
+			'password' 	=> password_hash('user123', PASSWORD_BCRYPT, ['const' => 14]),
+			'nama'     	=> $this->input->post('nama'),
+			'nim'      	=> $this->input->post('nim'),
+			'jk'       	=> $this->input->post('jk'),
+			'level'		=> $this->input->post('level'),
+			'noKartu'	=> $this->input->post('noKartu'),
+			'image'		=> 'default.png'
 		];
 
 		$insert = $this->db->insert('user', $data);
@@ -58,7 +59,7 @@ class User extends CI_Controller
 		$data = [
 			'email'     => $this->input->post('email'),
 			'nama'      => $this->input->post('nama'),
-			'nip'       => $this->input->post('nip'),
+			'nim'       => $this->input->post('nim'),
 			'jk'        => $this->input->post('jk'),
 			'level'    => $this->input->post('level'),
 			'noKartu'  => $this->input->post('noKartu')
@@ -95,6 +96,18 @@ class User extends CI_Controller
 		}
 
 		redirect('admin/user', 'refresh');
+	}
+
+	public function resetPwd($id)
+	{
+		$data = [
+			'password'	=> password_hash('user123', PASSWORD_BCRYPT),
+		];
+
+		$this->db->where('id', $id);
+		$this->db->update('user', $data);
+		$this->session->set_flashdata('toastr-success', 'Password berhasil di reset!');
+		redirect('admin/user');
 	}
 }
 

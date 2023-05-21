@@ -11,7 +11,7 @@
                         <img src="<?= base_url('upload/profile/' . $this->dt_user->image); ?>" alt="Profile"><?= $this->dt_user->nama; ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="javascript:;"> Profile</a>
+                        <a class="dropdown-item" href="<?= base_url('user/profile'); ?>"> Profile</a>
                         <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
                 </li>

@@ -13,10 +13,11 @@
 								<tr>
 									<th class="text-center">#</th>
 									<th>Nama</th>
-									<th>NIP</th>
+									<th>NIM</th>
 									<th>Email</th>
 									<th>Level</th>
 									<th>No. Kartu</th>
+									<th>Password</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -26,13 +27,21 @@
 									<tr>
 										<td class="text-center"><?= $i++; ?></td>
 										<td><?= $u->nama; ?></td>
-										<td><?= $u->nip; ?></td>
+										<td><?= $u->nim; ?></td>
 										<td><?= $u->email; ?></td>
 										<td><?= $u->level; ?></td>
 										<td><?= $u->noKartu; ?></td>
 										<td>
-											<a href="#" class="badge badge-warning edit_btn" data-toggle="modal" data-target="#editUser" data-id="<?= $u->id; ?>" data-nama="<?= $u->nama; ?>" data-nip="<?= $u->nip; ?>" data-email="<?= $u->email; ?>" data-jk="<?= $u->jk; ?>" data-level="<?= $u->level; ?>" data-nokartu="<?= $u->noKartu; ?>">Edit</a>
+											<?php if (password_verify('user123', $u->password)) : ?>
+												<span class="badge badge-warning">Default</span>
+											<?php else : ?>
+												<span class="badge badge-success">Custom</span>
+											<?php endif; ?>
+										</td>
+										<td>
+											<a href="#" class="badge badge-warning edit_btn" data-toggle="modal" data-target="#editUser" data-id="<?= $u->id; ?>" data-nama="<?= $u->nama; ?>" data-nim="<?= $u->nim; ?>" data-email="<?= $u->email; ?>" data-jk="<?= $u->jk; ?>" data-level="<?= $u->level; ?>" data-nokartu="<?= $u->noKartu; ?>">Edit</a>
 											<a href="<?= base_url('admin/user/delete/' . $u->id); ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" class="badge badge-danger">Delete</a>
+											<a href="<?= base_url('admin/user/resetPwd/' . $u->id); ?>" onclick="return confirm('Apakah anda yakin ingin reset password?')" class="badge badge-dark">reset pwd</a>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -65,8 +74,8 @@
 								<input type="text" class="form-control" name="nama">
 							</div>
 							<div class="form-group">
-								<label>NIP</label>
-								<input type="text" class="form-control" name="nip">
+								<label>NIM</label>
+								<input type="text" class="form-control" name="nim">
 							</div>
 							<div class="form-group">
 								<label>Email</label>
@@ -125,8 +134,8 @@
 								<input type="text" class="form-control" name="nama" id="nama">
 							</div>
 							<div class="form-group">
-								<label>NIP</label>
-								<input type="text" class="form-control" name="nip" id="nip">
+								<label>NIM</label>
+								<input type="text" class="form-control" name="nim" id="nim">
 							</div>
 							<div class="form-group">
 								<label>Email</label>
@@ -172,7 +181,7 @@
 		$(edit_btn[i]).click(function() {
 			let id = $(this).data('id');
 			let nama = $(this).data('nama');
-			let nip = $(this).data('nip');
+			let nim = $(this).data('nim');
 			let email = $(this).data('email');
 			let jk = $(this).data('jk');
 			let level = $(this).data('level');
@@ -180,7 +189,7 @@
 
 			$('#id_user').val(id);
 			$('#nama').val(nama);
-			$('#nip').val(nip);
+			$('#nim').val(nim);
 			$('#email').val(email);
 			$('#jk').val(jk);
 			$('#level').val(level);

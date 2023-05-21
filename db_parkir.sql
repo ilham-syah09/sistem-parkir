@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 07, 2023 at 04:48 PM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.4.14
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 21 Bulan Mei 2023 pada 03.40
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -36,16 +37,16 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id`, `nama`, `username`, `image`, `password`) VALUES
-(1, 'Admin Kepegawaian', 'superadmin', 'default.png', '$2y$10$aX3KtHwTSYkN0AZ0fn7LcO727KuqwFEu91mL4kEKw7fYsOou1exSu');
+(1, 'Administrator', 'superadmin', 'default.png', '$2y$10$aX3KtHwTSYkN0AZ0fn7LcO727KuqwFEu91mL4kEKw7fYsOou1exSu');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `data`
+-- Struktur dari tabel `data`
 --
 
 CREATE TABLE `data` (
@@ -61,21 +62,10 @@ CREATE TABLE `data` (
   `updatedAt` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `data`
---
-
-INSERT INTO `data` (`id`, `metode`, `idUser`, `tanggal`, `parkirMasuk`, `pictureMasuk`, `parkirKeluar`, `pictureKeluar`, `createdAt`, `updatedAt`) VALUES
-(1, 'scan', 1, '2023-04-05', '07:20:00', 'sample.png', '11:30:00', 'sample.png', '2023-04-05 07:00:10', '2023-04-05 07:13:52'),
-(2, 'scan', 1, '2023-04-05', '14:20:00', 'sample.png', '16:58:00', 'sample.png', '2023-04-05 07:00:10', '2023-04-05 07:13:52'),
-(3, 'rfid', 3, '2023-04-06', '14:20:00', 'sample.png', '16:58:00', 'sample.png', '2023-04-06 07:00:10', NULL),
-(4, 'scan', 2, '2023-04-06', '13:13:00', 'sample.png', '14:10:00', 'sample.png', '2023-04-06 06:13:15', '2023-04-06 07:20:02'),
-(5, 'scan', 2, '2023-04-06', '15:13:00', 'sample.png', NULL, NULL, '2023-04-06 07:13:15', NULL);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `file`
+-- Struktur dari tabel `file`
 --
 
 CREATE TABLE `file` (
@@ -87,17 +77,17 @@ CREATE TABLE `file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `file`
+-- Dumping data untuk tabel `file`
 --
 
 INSERT INTO `file` (`id`, `ket`, `nama`, `createdAt`, `updatedAt`) VALUES
-(1, 'masuk', 'qrcode-20230406113602.png', '2023-03-11 05:35:17', '2023-04-06 04:36:02'),
-(2, 'keluar', 'qrcode-20230407214317.png', '2023-03-11 05:35:17', '2023-04-07 14:43:17');
+(1, 'masuk', 'qrcode-20230521083129.png', '2023-03-11 05:35:17', '2023-05-21 01:31:29'),
+(2, 'keluar', 'qrcode-20230521083133.png', '2023-03-11 05:35:17', '2023-05-21 01:31:33');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `queue`
+-- Struktur dari tabel `queue`
 --
 
 CREATE TABLE `queue` (
@@ -112,7 +102,7 @@ CREATE TABLE `queue` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting`
+-- Struktur dari tabel `setting`
 --
 
 CREATE TABLE `setting` (
@@ -123,16 +113,16 @@ CREATE TABLE `setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `setting`
+-- Dumping data untuk tabel `setting`
 --
 
 INSERT INTO `setting` (`id`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, 'REGISTRASI', '2023-04-06 07:42:36', NULL);
+(1, 'REGISTRASI', '2023-04-06 07:42:36', '2023-05-21 01:37:14');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -140,104 +130,104 @@ CREATE TABLE `user` (
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `nip` varchar(20) DEFAULT NULL,
+  `nim` varchar(20) DEFAULT NULL,
   `jk` int(1) DEFAULT NULL,
   `level` varchar(10) NOT NULL,
   `noKartu` varchar(20) DEFAULT NULL,
-  `image` text NOT NULL DEFAULT 'default.png',
+  `image` varchar(50) NOT NULL,
   `createAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updateAt` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `nama`, `nip`, `jk`, `level`, `noKartu`, `image`, `createAt`, `updateAt`) VALUES
-(1, 'user.1@gmail.com', '$2y$10$eX4S9GG3Ko2NgIRfCLwfEOHf5zknAxKU38I6ecSEYYG3JM/K3zMcq', 'User 1', '199912030001', 2, 'Karyawan', NULL, 'default.png', '2023-02-20 02:17:29', '2023-04-06 02:38:33'),
-(2, 'ilham@gmail.com', '$2y$10$eX4S9GG3Ko2NgIRfCLwfEOHf5zknAxKU38I6ecSEYYG3JM/K3zMcq', 'Ilham', '129091209', 1, 'Mahasiswa', NULL, 'default.png', '2023-02-20 04:15:23', '2023-04-06 02:38:36'),
-(3, 'rfid@gmail.com', '$2y$10$eX4S9GG3Ko2NgIRfCLwfEOHf5zknAxKU38I6ecSEYYG3JM/K3zMcq', 'RFID', '129091209', 1, 'Tamu', 'AA AA AA AA', 'default.png', '2023-02-20 04:15:23', '2023-04-06 02:38:40');
+INSERT INTO `user` (`id`, `email`, `password`, `nama`, `nim`, `jk`, `level`, `noKartu`, `image`, `createAt`, `updateAt`) VALUES
+(18, 'default@gmail.com', '$2y$10$PBkYCzQId1EAEajG9X.BBedqzcXHGTJzYxJJ/i0sALrD75rPPBpay', 'Tamu 1', '', NULL, 'Tamu', '90 C2 12 20', 'd6b6c38c706c8c8db5b722c2a080f508.png', '2023-04-16 06:03:20', '2023-05-21 01:37:57'),
+(25, 'mahasiswa1@gmail.com', '$2y$10$ayMTeJgE8mLLyeVFeOk10.WlggobYFwV0r5Q7cFAmdH/vv0bjIXSi', 'Mahasiswa 1', '19089091', 1, 'Mahasiswa', '', 'default.png', '2023-05-21 01:38:32', NULL),
+(26, 'karyawan.1@gmail.com', '$2y$10$gXjU9QK3tnF1bAwSYW5vF.8DU8sbp542X7DPE4t7J5LbffphL4l5C', 'Karyawan 1', '', 1, 'Karyawan', '', 'default.png', '2023-05-21 01:39:11', NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `data`
+-- Indeks untuk tabel `data`
 --
 ALTER TABLE `data`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `file`
+-- Indeks untuk tabel `file`
 --
 ALTER TABLE `file`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `queue`
+-- Indeks untuk tabel `queue`
 --
 ALTER TABLE `queue`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `setting`
+-- Indeks untuk tabel `setting`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `data`
+-- AUTO_INCREMENT untuk tabel `data`
 --
 ALTER TABLE `data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `file`
+-- AUTO_INCREMENT untuk tabel `file`
 --
 ALTER TABLE `file`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `queue`
+-- AUTO_INCREMENT untuk tabel `queue`
 --
 ALTER TABLE `queue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `setting`
+-- AUTO_INCREMENT untuk tabel `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

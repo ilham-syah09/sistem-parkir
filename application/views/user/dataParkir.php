@@ -1,49 +1,6 @@
 <!-- page content -->
 <div class="right_col" role="main">
 	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-header">
-					<h4>Parkir hari ini - <?= hari(date('N')) . ', ' . date('d M Y'); ?></h4>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered table-hover">
-							<thead class="bg-info">
-								<tr>
-									<th>Parkir Masuk</th>
-									<th>Parkir Pulang</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<?php if ($dataParkirHariIni) : ?>
-										<?php if ($dataParkirHariIni->parkirMasuk != null && $dataParkirHariIni->parkirKeluar != null) : ?>
-											<td>
-												<a href="#" class="badge badge-info" data-toggle="modal" data-target="#modalScan" data-title="Scan" id="btn-scan" data-typescan="Masuk">Scan</a>
-											</td>
-											<td></td>
-										<?php else : ?>
-											<td></td>
-											<td>
-												<?php if ($dataParkirHariIni->parkirMasuk != null) : ?>
-													<a href="#" class="badge badge-info" data-toggle="modal" data-target="#modalScan" data-title="Scan" id="btn-scan" data-typeScan="Keluar">Scan</a>
-												<?php endif; ?>
-											</td>
-										<?php endif; ?>
-									<?php else : ?>
-										<td>
-											<a href="#" class="badge badge-info" data-toggle="modal" data-target="#modalScan" data-title="Scan" id="btn-scan" data-typescan="Masuk">Scan</a>
-										</td>
-										<td></td>
-									<?php endif; ?>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="col-sm-4 col-xl-4">
 			<div class="form-group">
 				<label for="by_tahun">Tahun</label>
