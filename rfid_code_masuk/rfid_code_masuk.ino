@@ -93,10 +93,10 @@ void setup() {
 
   lcd.clear();
   
-  lcd.setCursor(4, 0);
-  lcd.print("KOTAK AMAL");
-  lcd.setCursor(0, 1);
-  lcd.print("KEAMANAN 2 LAPIS");
+  lcd.setCursor(5, 0);
+  lcd.print("SISTEM");
+  lcd.setCursor(5, 1);
+  lcd.print("PARKIR");
 
   pinMode(buzzer, OUTPUT);
   digitalWrite(buzzer, LOW);

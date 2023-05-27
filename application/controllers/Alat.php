@@ -13,7 +13,6 @@ class Alat extends CI_Controller
 
 		if (!$pegawai) {
 			$data = [
-				"email"    => "default@gmail.com",
 				"password" => password_hash('user123', PASSWORD_BCRYPT),
 				"noKartu"  => $noKartu,
 				"nama"     => "User Default",
