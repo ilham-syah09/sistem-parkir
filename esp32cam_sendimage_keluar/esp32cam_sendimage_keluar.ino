@@ -15,13 +15,22 @@
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
+#include <HTTPClient.h>
+
+#define USE_SERIAL Serial
+
+#define FlashLed 4
+
 const char* ssid = "hp murah";
 const char* password = "12345678";
 
-//String serverName = "192.168.0.112";   // REPLACE WITH YOUR LOCAL IP ADDRESS
+///String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
 String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
 
 String serverPath = "/alat/kirimGambarKeluar";     // The default serverPath should be upload.php
+String urlGetQueue = "http://codesolution.my.id/alat/getQueueGambar?act=keluar";
+
+String responQueue;
 
 const int serverPort = 80;
 
@@ -52,6 +61,7 @@ unsigned long previousMillis = 0;   // last time image was sent
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); 
   Serial.begin(115200);
+  pinMode(FlashLed, OUTPUT); digitalWrite(FlashLed, LOW); 
 
   WiFi.mode(WIFI_STA);
   Serial.println();
@@ -106,14 +116,13 @@ void setup() {
     delay(1000);
     ESP.restart();
   }
-
-  sendPhoto(); 
 }
 
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= timerInterval) {
-    sendPhoto();
+    getQueue();
+    
     previousMillis = currentMillis;
   }
 }
@@ -121,14 +130,24 @@ void loop() {
 String sendPhoto() {
   String getAll;
   String getBody;
+  digitalWrite(FlashLed, HIGH);  //aktifkan flash light
 
+  //pre capture for accurate timing
+  for (int i = 0; i <= 3; i++) {
+    camera_fb_t * fb = NULL;
+    fb = esp_camera_fb_get();
+     if(!fb) {
+        Serial.println("Camera capture failed");
+        delay(1000);
+        ESP.restart();
+      } 
+    esp_camera_fb_return(fb);
+    delay(200);
+  }
+  
   camera_fb_t * fb = NULL;
   fb = esp_camera_fb_get();
-  if(!fb) {
-    Serial.println("Camera capture failed");
-    delay(1000);
-    ESP.restart();
-  }
+  digitalWrite(FlashLed, LOW); //nonaktifkan flash light
   
   Serial.println("Connecting to server: " + serverName);
 
@@ -192,4 +211,33 @@ String sendPhoto() {
     Serial.println(getBody);
   }
   return getBody;
+}
+
+void getQueue() {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    USE_SERIAL.print("[HTTP] Memulai get queue...\n");
+    http.begin(urlGetQueue); //HTTP
+
+    USE_SERIAL.print("[HTTP] Get queue in database..\n");
+    int httpCode = http.GET();
+
+    if(httpCode > 0) {
+        USE_SERIAL.printf("[HTTP] Kode respon get.. : %d\n", httpCode);
+
+        if(httpCode == HTTP_CODE_OK) {
+            responQueue = http.getString();
+            USE_SERIAL.println("Respon : " + responQueue);
+
+            if (responQueue == "Ada queue") {
+              sendPhoto();
+            }
+        }
+    } else {
+        USE_SERIAL.printf("[HTTP] Get queue in database... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+
+    http.end();
+  }
 }

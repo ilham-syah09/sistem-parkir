@@ -359,7 +359,7 @@ void handleScan() {
     lcd.setCursor(0, 0);
     lcd.print(responKode);
     lcd.setCursor(0, 1);
-    lcd.print(responKet);
+    lcd.print(responNama);
 
     digitalWrite(buzzer, HIGH);
     delay(200);

@@ -172,6 +172,7 @@ class Alat extends CI_Controller
 			$this->db->where('status', 1);
 			$this->db->where('act', $act);
 
+			$this->db->order_by('id', 'desc');
 			$queue = $this->db->get('queue', 1)->row();
 
 			if ($queue) {
@@ -238,6 +239,23 @@ class Alat extends CI_Controller
 			}
 		} else {
 			echo 'Tidak ada data!';
+		}
+	}
+
+	public function getQueueGambar()
+	{
+		$act = $this->input->get('act');
+
+		$this->db->where('status', 0);
+		$this->db->where('act', $act);
+
+		$this->db->order_by('id', 'desc');
+		$queue = $this->db->get('queue', 1)->row();
+
+		if ($queue) {
+			echo 'Ada queue';
+		} else {
+			echo 'Tidak ada queue';
 		}
 	}
 

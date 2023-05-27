@@ -93,10 +93,10 @@ void setup() {
 
   lcd.clear();
   
-  lcd.setCursor(4, 0);
-  lcd.print("KOTAK AMAL");
-  lcd.setCursor(0, 1);
-  lcd.print("KEAMANAN 2 LAPIS");
+  lcd.setCursor(5, 0);
+  lcd.print("SISTEM");
+  lcd.setCursor(5, 1);
+  lcd.print("PARKIR");
 
   pinMode(buzzer, OUTPUT);
   digitalWrite(buzzer, LOW);
@@ -284,7 +284,7 @@ void handleScan() {
     
     http.begin( scan + (String) noKartu + "&act=keluar" );
     
-    USE_SERIAL.print("[HTTP] Cek user ke database ...\n");
+    USE_SERIAL.print("[HTTP] Handle scan ke database ...\n");
     int httpCode = http.GET();
 
     if(httpCode > 0)
@@ -359,7 +359,7 @@ void handleScan() {
     lcd.setCursor(0, 0);
     lcd.print(responKode);
     lcd.setCursor(0, 1);
-    lcd.print(responKet);
+    lcd.print(responNama);
 
     digitalWrite(buzzer, HIGH);
     delay(200);

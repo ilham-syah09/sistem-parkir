@@ -15,6 +15,9 @@
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
+#include <HTTPClient.h>
+
+#define USE_SERIAL Serial
 
 #define FlashLed 4
 
@@ -24,7 +27,10 @@ const char* password = "12345678";
 ///String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
 String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
 
-String serverPath = "/alat/kirimGambarKeluar";     // The default serverPath should be upload.php
+String serverPath = "/alat/kirimGambarMasuk";     // The default serverPath should be upload.php
+String urlGetQueue = "http://codesolution.my.id/alat/getQueueGambar?act=masuk";
+
+String responQueue;
 
 const int serverPort = 80;
 
@@ -110,14 +116,13 @@ void setup() {
     delay(1000);
     ESP.restart();
   }
-
-  sendPhoto(); 
 }
 
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= timerInterval) {
-    sendPhoto();
+    getQueue();
+    
     previousMillis = currentMillis;
   }
 }
@@ -206,4 +211,33 @@ String sendPhoto() {
     Serial.println(getBody);
   }
   return getBody;
+}
+
+void getQueue() {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    USE_SERIAL.print("[HTTP] Memulai get queue...\n");
+    http.begin(urlGetQueue); //HTTP
+
+    USE_SERIAL.print("[HTTP] Get queue in database..\n");
+    int httpCode = http.GET();
+
+    if(httpCode > 0) {
+        USE_SERIAL.printf("[HTTP] Kode respon get.. : %d\n", httpCode);
+
+        if(httpCode == HTTP_CODE_OK) {
+            responQueue = http.getString();
+            USE_SERIAL.println("Respon : " + responQueue);
+
+            if (responQueue == "Ada queue") {
+              sendPhoto();
+            }
+        }
+    } else {
+        USE_SERIAL.printf("[HTTP] Get queue in database... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+
+    http.end();
+  }
 }
