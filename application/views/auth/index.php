@@ -39,6 +39,7 @@
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
+                    <img src="<?= base_url('assets/img/logo-brand.png'); ?>" alt="logo-brand" width="150">
                     <form action="<?= base_url('auth/proses'); ?>" method="post">
                         <h1>Login Form</h1>
                         <div>
