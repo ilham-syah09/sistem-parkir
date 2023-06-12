@@ -62,7 +62,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("hp murah", "12345678"); // Sesuaikan SSID dan password ini
+  WiFiMulti.addAP("IndahCahyani", "Indahcahyani"); // Sesuaikan SSID dan password ini
 
   for (int u = 1; u <= 5; u++)
   {
