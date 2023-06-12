@@ -45,6 +45,10 @@ String no = "", noKartu = "", responRegistrasi = "", responStatus = "", responSc
 // buzzer
 #define buzzer D0
 
+#include <SimpleTimer.h>
+
+SimpleTimer statusTimer;
+
 void setup() {
   Serial.begin(115200);   //Komunikasi baud rate
   
@@ -75,6 +79,8 @@ void setup() {
       lcd.print("WiFi");
       lcd.setCursor(2, 1);
       lcd.print("CONNECTED!!!");
+
+      cekStatus();
       
       delay(1000);
     }
@@ -109,29 +115,33 @@ void setup() {
 }
 
 void loop() {
-  cekStatus(); // ada dibaris 193
+  statusTimer.setInterval(10000);
 
-  Serial.println("");
-  Serial.println("Status alat : " + responStatus);
-  Serial.println("Tempelkan Kartu");
-  Serial.println("");
+  if (statusTimer.isReady()) {
+    cekStatus();
 
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("STATUS : " + responStatus);
-  lcd.setCursor(0, 1);
-  lcd.print("TEMPELKAN KARTU");
+    Serial.println("");
+    Serial.println("Status alat : " + responStatus);
+    Serial.println("Tempelkan Kartu");
+    Serial.println("");
+  
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("STATUS : " + responStatus);
+    lcd.setCursor(0, 1);
+    lcd.print("TEMPELKAN KARTU");
+  
+    responQueue = "";
+    cekQueue("0", "keluar"); 
+  
+    while (responQueue == "Menunggu") {
+      cekQueue("0", "keluar");
+      delay(1000);
+    }
 
-  responQueue = "";
-  cekQueue("0", "keluar"); 
-
-  while (responQueue == "Menunggu") {
-    cekQueue("0", "keluar");
-    delay(1000);
+    statusTimer.reset(); 
   }
-
-  delay(100);
-
+  
   if ( ! mfrc522.PICC_IsNewCardPresent())
   {
     return;
