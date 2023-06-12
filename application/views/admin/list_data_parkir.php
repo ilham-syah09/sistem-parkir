@@ -13,7 +13,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered table-hover" id="example">
+						<table class="table table-bordered table-hover" id="examples">
 							<thead class="bg-info">
 								<tr>
 									<th>Nama User</th>
