@@ -71,6 +71,7 @@
     </div>
 
     <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom Theme Scripts -->
@@ -129,6 +130,10 @@
             .appendTo('#examples_wrapper .col-md-6:eq(0)');
 
         $('.js-masked-time').mask('99:99');
+
+        $(document).ready(function() {
+            $("#basic-form").validate();
+        });
     </script>
 
 </body>

@@ -66,24 +66,24 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="<?= base_url('admin/user/add'); ?>" method="post">
+				<form id="basic-form" action="<?= base_url('admin/user/add'); ?>" method="post">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>Nama User</label>
-								<input type="text" class="form-control" name="nama">
+								<input type="text" class="form-control" name="nama" required>
 							</div>
 							<div class="form-group">
 								<label>NIM</label>
-								<input type="text" class="form-control" name="nim">
+								<input type="text" class="form-control" name="nim" required>
 							</div>
 							<div class="form-group">
 								<label>Email</label>
-								<input type="email" class="form-control" name="email">
+								<input type="email" class="form-control" name="email" required>
 							</div>
 							<div class="form-group">
 								<label>Jenis Kelamin</label>
-								<select name="jk" class="form-control">
+								<select name="jk" class="form-control" required>
 									<option value="">-- Pilih Jenis Kelamin --</option>
 									<option value="1">Laki - laki</option>
 									<option value="2">Perempuan</option>
@@ -91,7 +91,7 @@
 							</div>
 							<div class="form-group">
 								<label>Level</label>
-								<select name="level" class="form-control">
+								<select name="level" class="form-control" required>
 									<option value="">-- Pilih Level --</option>
 									<option value="Karyawan">Karyawan</option>
 									<option value="Mahasiswa">Mahasiswa</option>
@@ -100,7 +100,7 @@
 							</div>
 							<div class="form-group">
 								<label>No. Kartu</label>
-								<input type="text" class="form-control" name="noKartu">
+								<input type="text" class="form-control" name="noKartu" required>
 							</div>
 						</div>
 					</div>
@@ -160,7 +160,7 @@
 							</div>
 							<div class="form-group">
 								<label>No. Kartu</label>
-								<input type="text" class="form-control" name="noKartu" id="noKartu">
+								<input type="text" class="form-control" name="noKartu" id="noKartu" readonly>
 							</div>
 						</div>
 					</div>

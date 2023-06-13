@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="<?= base_url(); ?>assets/vendors/fancybox/jquery.fancybox.min.css" type="text/css" />
 
     <link rel="stylesheet" href="<?= base_url(); ?>assets/vendors/toastr/toastr.min.css">
+
+    <script src="<?= base_url(); ?>assets/vendors/jquery/dist/jquery.min.js"></script>
 </head>
 
 <body class="login">
@@ -100,13 +102,15 @@
     </div>
 
     <!-- jQuery -->
-    <script src="<?= base_url(); ?>assets/vendors/jquery/dist/jquery.min.js"></script>
+
+
 
     <!-- FancyBox -->
     <script src="<?= base_url(); ?>assets/vendors/fancybox/jquery.fancybox.min.js"></script>
 
     <script src="<?= base_url(); ?>assets/vendors/toastr/toastr.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendors/toastr/customScript.js"></script>
+
 
 </body>
 
