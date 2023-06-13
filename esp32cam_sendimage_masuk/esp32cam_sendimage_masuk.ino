@@ -21,8 +21,8 @@
 
 #define FlashLed 4
 
-const char* ssid = "IndahCahyani";
-const char* password = "Indahcahyani";
+const char* ssid = "hp murah";
+const char* password = "12345678";
 
 ///String serverName = "192.168.79.185";   // REPLACE WITH YOUR LOCAL IP ADDRESS
 String serverName = "codesolution.my.id";   // OR REPLACE WITH YOUR DOMAIN NAME
