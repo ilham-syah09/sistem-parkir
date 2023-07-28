@@ -52,13 +52,23 @@
 		</div>
 		<div class="col-sm-4 col-xl-4">
 			<div class="form-group">
-				<label for="by_tahun">Bulan</label>
+				<label for="by_bulan">Bulan</label>
 				<select class="js-select2 form-control" name="by_bulan" id="by_bulan">
 					<option value="">-- Pilih Bulan --</option>
 					<?php foreach (range(1, 12) as $bulan) : ?>
 						<option value="<?= $bulan; ?>" <?= ($bulan == $bln_ini) ? 'selected' : ''; ?>>
 							<?= bulan($bulan); ?></option>
 					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+		<div class="col-sm-4 col-xl-4">
+			<div class="form-group">
+				<label for="by_ket">Keterangan</label>
+				<select class="js-select2 form-control" name="by_ket" id="by_ket">
+					<option value="">-- Pilih Keterangan --</option>
+					<option value="yes" <?= ($ket == 'yes') ? 'selected' : ''; ?>>With Expired</option>
+					<option value="no" <?= ($ket == 'no') ? 'selected' : ''; ?>>Without Expired</option>
 				</select>
 			</div>
 		</div>
@@ -124,5 +134,17 @@
 		}
 
 		document.location.href = `<?php echo base_url('admin/data/') ?>${tahun}/${bulan}`;
+	});
+
+	$('#by_ket').change(function() {
+		let tahun = $('#by_tahun').find(':selected').val();
+		let bulan = $('#by_bulan').find(':selected').val();
+		let ket = $(this).find(':selected').val();
+
+		if (ket === '') {
+			return 0;
+		}
+
+		document.location.href = `<?php echo base_url('admin/data/') ?>${tahun}/${bulan}/${ket}`;
 	});
 </script>

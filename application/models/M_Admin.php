@@ -72,7 +72,7 @@ class M_Admin extends CI_Model
 		}
 	}
 
-	public function getDataParkir($tahun, $bulan, $hari = null)
+	public function getDataParkir($tahun, $bulan, $hari = null, $ket = null, $expired = null)
 	{
 		$this->db->select('tanggal, COUNT(parkirMasuk) as jumlahMasuk, COUNT(parkirKeluar) as jumlahKeluar, COUNT(idUser) as total');
 
@@ -81,6 +81,16 @@ class M_Admin extends CI_Model
 		$this->db->where('MONTH(tanggal)', $bulan);
 		if ($hari != null) {
 			$this->db->where('DAY(tanggal)', $hari);
+		} else {
+			if ($ket != null) {
+				if ($ket == 'yes') {
+					$today = strtotime(date('Y-m-d'));
+
+					$minDay = date('Y-m-d', strtotime("-" . $expired . " days", $today));
+
+					$this->db->where('tanggal >=', $minDay);
+				}
+			}
 		}
 		$this->db->group_end();
 

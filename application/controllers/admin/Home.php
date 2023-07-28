@@ -39,7 +39,8 @@ class Home extends CI_Controller
     public function updateSetting()
     {
         $data = [
-            'status'    => $this->input->post('status')
+            'status'  => $this->input->post('status'),
+            'expired' => $this->input->post('expired')
         ];
 
         $this->db->where('id', $this->input->post('id'));
