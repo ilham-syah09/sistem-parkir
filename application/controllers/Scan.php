@@ -24,10 +24,12 @@ class Scan extends CI_Controller
 
 	public function generateQRCode($ket)
 	{
-		$waktuSekarang      = date('H:i:s');
-		$batasWaktu         = date('H:i:s', strtotime("$waktuSekarang + 3 minute"));
-		$namaFile           = "qrcode-" . date('YmdHis') . ".png";
-		$url                = "user/scan/$ket/$waktuSekarang/$batasWaktu";
+		// $waktuSekarang      = date('H:i:s');
+		// $batasWaktu         = date('H:i:s', strtotime("$waktuSekarang + 3 minute"));
+		// $namaFile           = "qrcode-" . date('YmdHis') . ".png";
+		$namaFile           = "qrcode-" . $ket . ".png";
+		// $url                = "user/scan/$ket/$waktuSekarang/$batasWaktu";
+		$url                = "user/scan/$ket";
 		$params['data']     = base_url($url);
 		$params['level']    = 'H';
 		$params['size']     = 10;
@@ -43,15 +45,16 @@ class Scan extends CI_Controller
 			$this->db->where('id', $fileDb->id);
 			$update = $this->db->update('file', ['nama' => $namaFile]);
 
-			if ($update) {
-				unlink(FCPATH . 'file/' . $fileDb->nama);
-			}
+			// if ($update) {
+			// 	unlink(FCPATH . 'file/' . $fileDb->nama);
+			// }
 		} else {
 			$this->db->where('id', $fileDb->id);
 			$update = $this->db->update('file', ['nama' => $namaFile]);
 		}
 
-		echo json_encode(base_url("file/$namaFile?$waktuSekarang"));
+		// echo json_encode(base_url("file/$namaFile?$waktuSekarang"));
+		echo json_encode(base_url("file/$namaFile"));
 	}
 }
 

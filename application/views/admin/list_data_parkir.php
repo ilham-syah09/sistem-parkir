@@ -2,7 +2,7 @@
 <div class="right_col" role="main">
 	<div class="row mb-3 text-right">
 		<div class="col-xl-12">
-			<a href="<?= base_url('admin/data/') . date('Y', strtotime($tanggal)) . '/' . date('m', strtotime($tanggal)); ?>" class="btn btn-primary">Kembali</a>
+			<a href="<?= base_url('admin/data/') . $url; ?>" class="btn btn-primary">Kembali</a>
 		</div>
 	</div>
 	<div class="row">

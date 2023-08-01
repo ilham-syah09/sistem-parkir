@@ -50,15 +50,27 @@
                 </div>
                 <div class="card-body">
                     <form action="<?= base_url('admin/home/updateSetting'); ?>" method="post">
-                        <input type="hidden" name="id" value="<?= $setting->id; ?>">
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select class="form-control" name="status">
-                                <option value="SCAN" <?= ($setting->status == 'SCAN') ? 'selected' : '' ?>>SCAN</option>
-                                <option value="REGISTRASI" <?= ($setting->status == 'REGISTRASI') ? 'selected' : '' ?>>REGISTRASI</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="id" value="<?= $setting->id; ?>">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select class="form-control" name="status">
+                                        <option value="SCAN" <?= ($setting->status == 'SCAN') ? 'selected' : '' ?>>SCAN</option>
+                                        <option value="REGISTRASI" <?= ($setting->status == 'REGISTRASI') ? 'selected' : '' ?>>REGISTRASI</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Expired <sup>(hari)</sup></label>
+                                    <input type="number" class="form-control" name="expired" value="<?= $setting->expired; ?>" required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">save</button>
                     </form>
                 </div>
             </div>

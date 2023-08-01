@@ -22,12 +22,38 @@ class Data extends CI_Controller
 	{
 		$th_ini  = $this->uri->segment(3);
 		$bln_ini = $this->uri->segment(4);
+		$ket     = $this->uri->segment(5);
 
 		if (!$th_ini) {
 			$th_ini = $this->user->getTahunIni();
 		}
 		if (!$bln_ini) {
 			$bln_ini = $this->user->getBulanIni($th_ini);
+		}
+		if (!$ket) {
+			$ket = 'yes';
+		}
+
+		$setting = $this->db->get('setting')->row();
+
+		$this->session->set_userdata('url', $th_ini . '/' . $bln_ini . '/' . $ket);
+
+		if ($ket == 'yes') {
+			$today = strtotime(date('Y-m-d'));
+			$minDay = date('Y-m-d', strtotime("-" . $setting->expired . " days", $today));
+
+			$where = [
+				'idUser'         => $this->dt_user->id,
+				'YEAR(tanggal)'  => $th_ini,
+				'MONTH(tanggal)' => $bln_ini,
+				'tanggal >='     => $minDay
+			];
+		} else {
+			$where = [
+				'idUser'         => $this->dt_user->id,
+				'YEAR(tanggal)'  => $th_ini,
+				'MONTH(tanggal)' => $bln_ini
+			];
 		}
 
 		$data = [
@@ -39,14 +65,11 @@ class Data extends CI_Controller
 				'idUser' => $this->dt_user->id,
 				'tanggal'   => date('Y-m-d')
 			]),
-			'dataParkir' => $this->user->getDataParkir([
-				'idUser'      => $this->dt_user->id,
-				'YEAR(tanggal)'  => $th_ini,
-				'MONTH(tanggal)' => $bln_ini
-			]),
+			'dataParkir' => $this->user->getDataParkir($where),
 			'tahun'   => $this->user->getTahun(),
 			'th_ini'  => $th_ini,
-			'bln_ini' => $bln_ini
+			'bln_ini' => $bln_ini,
+			'ket'     => $ket
 		];
 
 		$this->load->view('index', $data);
@@ -54,6 +77,8 @@ class Data extends CI_Controller
 
 	public function detail($id)
 	{
+		$url = $this->session->userdata('url');
+
 		$data = [
 			'title'    => 'Detail Data Parkir',
 			'sidebar'  => 'user/sidebar',
@@ -62,6 +87,7 @@ class Data extends CI_Controller
 			'dataParkir' => $this->user->getDataParkir([
 				'id' => $id
 			]),
+			'url' => $url
 		];
 
 		$this->load->view('index', $data);

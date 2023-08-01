@@ -56,18 +56,20 @@ $route['translate_uri_dashes'] = FALSE;
 // admin
 $route['admin'] = 'admin/home';
 
-$route['admin/data/list/(:any)']        = 'admin/data/list/$1';
-$route['admin/data/detail/(:any)']      = 'admin/data/detail/$1';
-$route['admin/data/izin/(:any)/(:any)'] = 'admin/data/izin/$1/$2';
-$route['admin/data/(:any)']             = 'admin/data/index';
-$route['admin/data/(:any)/(:any)']      = 'admin/data/index';
+$route['admin/data/list/(:any)']          = 'admin/data/list/$1';
+$route['admin/data/detail/(:any)']        = 'admin/data/detail/$1';
+$route['admin/data/izin/(:any)/(:any)']   = 'admin/data/izin/$1/$2';
+$route['admin/data/(:any)']               = 'admin/data/index';
+$route['admin/data/(:any)/(:any)']        = 'admin/data/index';
+$route['admin/data/(:any)/(:any)/(:any)'] = 'admin/data/index';
 
 // user
 $route['user'] = 'user/home';
 
-$route['user/data/detail/(:any)'] = 'user/data/detail/$1';
-$route['user/data/(:any)']        = 'user/data/index';
-$route['user/data/(:any)/(:any)'] = 'user/data/index';
+$route['user/data/detail/(:any)']        = 'user/data/detail/$1';
+$route['user/data/(:any)']               = 'user/data/index';
+$route['user/data/(:any)/(:any)']        = 'user/data/index';
+$route['user/data/(:any)/(:any)/(:any)'] = 'user/data/index';
 
 $route['user/scan/(:any)/(:any)/(:any)'] = 'user/scan/index';
 

@@ -67,9 +67,9 @@
 		$(document).ready(function() {
 			QRCodeKehadiran();
 
-			setInterval(function() {
-				QRCodeKehadiran();
-			}, 120000);
+			// setInterval(function() {
+			// 	QRCodeKehadiran();
+			// }, 5000);
 		});
 
 		function QRCodeKehadiran() {

@@ -2,7 +2,7 @@
 <div class="right_col" role="main">
 	<div class="row mb-3 text-right">
 		<div class="col-xl-12">
-			<a href="<?= base_url('user/data/') . date('Y', strtotime($dataParkir[0]->tanggal)) . '/' . date('m', strtotime($dataParkir[0]->tanggal)); ?>" class="btn btn-primary">Kembali</a>
+			<a href="<?= base_url('user/data/') . $url; ?>" class="btn btn-primary">Kembali</a>
 		</div>
 	</div>
 	<div class="row">
