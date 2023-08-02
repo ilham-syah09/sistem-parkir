@@ -71,7 +71,8 @@ $route['user/data/(:any)']               = 'user/data/index';
 $route['user/data/(:any)/(:any)']        = 'user/data/index';
 $route['user/data/(:any)/(:any)/(:any)'] = 'user/data/index';
 
-$route['user/scan/(:any)/(:any)/(:any)'] = 'user/scan/index';
+// $route['user/scan/(:any)/(:any)/(:any)'] = 'user/scan/index';
+$route['user/scan/(:any)'] = 'user/scan/index';
 
 // scan
 $route['scan'] = 'scan/masuk';
