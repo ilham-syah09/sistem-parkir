@@ -38,10 +38,10 @@
 		</div>
 	</div>
 	<div class="row mt-3">
-		<div class="col-sm-4 col-xl-4">
+		<!-- <div class="col-sm-4 col-xl-4">
 			<div class="form-group">
 				<label for="by_tahun">Tahun</label>
-				<select class="js-select2 form-control" name="by_tahun" id="by_tahun">
+				<select class="form-control" name="by_tahun" id="by_tahun">
 					<option value="">-- Pilih Tahun --</option>
 					<?php foreach ($tahun as $th) : ?>
 						<option value="<?= $th->tahun; ?>" <?= ($th->tahun == $th_ini) ? 'selected' : ''; ?>>
@@ -49,11 +49,11 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
-		</div>
-		<div class="col-sm-4 col-xl-4">
+		</div> -->
+		<!-- <div class="col-sm-4 col-xl-4">
 			<div class="form-group">
 				<label for="by_bulan">Bulan</label>
-				<select class="js-select2 form-control" name="by_bulan" id="by_bulan">
+				<select class="form-control" name="by_bulan" id="by_bulan">
 					<option value="">-- Pilih Bulan --</option>
 					<?php foreach (range(1, 12) as $bulan) : ?>
 						<option value="<?= $bulan; ?>" <?= ($bulan == $bln_ini) ? 'selected' : ''; ?>>
@@ -61,14 +61,22 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
-		</div>
+		</div> -->
 		<div class="col-sm-4 col-xl-4">
 			<div class="form-group">
-				<label for="by_ket">Keterangan</label>
-				<select class="js-select2 form-control" name="by_ket" id="by_ket">
-					<option value="">-- Pilih Keterangan --</option>
-					<option value="yes" <?= ($ket == 'yes') ? 'selected' : ''; ?>>With Expired</option>
-					<option value="no" <?= ($ket == 'no') ? 'selected' : ''; ?>>Without Expired</option>
+				<label for="by_ket">Semester</label>
+				<select class="form-control" name="by_ket" id="by_ket">
+					<option value="">-- Pilih Semester --</option>
+					<?php $today = date('Y-m-d'); ?>
+					<?php foreach ($semester as $smt) : ?>
+						<?php if ($today >= $smt->awal && $today <= $smt->akhir) {
+							$ket = ' - ( Aktif )';
+						} else {
+							$ket = ' - ( Tidak Aktif )';
+						}
+						?>
+						<option value="<?= $smt->id; ?>" <?= ($smt_ini == $smt->id) ? 'selected' : ''; ?>><?= $smt->semester . $ket; ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
@@ -145,6 +153,6 @@
 			return 0;
 		}
 
-		document.location.href = `<?php echo base_url('admin/data/') ?>${tahun}/${bulan}/${ket}`;
+		document.location.href = `<?php echo base_url('admin/data/') ?>${ket}/filter`;
 	});
 </script>

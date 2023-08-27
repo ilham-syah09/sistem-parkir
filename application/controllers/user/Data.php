@@ -20,56 +20,59 @@ class Data extends CI_Controller
 
 	public function index()
 	{
-		$th_ini  = $this->uri->segment(3);
-		$bln_ini = $this->uri->segment(4);
-		$ket     = $this->uri->segment(5);
+		// $th_ini  = $this->uri->segment(3);
+		// $bln_ini = $this->uri->segment(4);
+		$smt_ini = $this->uri->segment(3);
 
-		if (!$th_ini) {
-			$th_ini = $this->user->getTahunIni();
-		}
-		if (!$bln_ini) {
-			$bln_ini = $this->user->getBulanIni($th_ini);
-		}
-		if (!$ket) {
-			$ket = 'yes';
-		}
+		$today = date('Y-m-d');
 
-		$setting = $this->db->get('setting')->row();
+		if (!$smt_ini) {
+			$this->db->where('awal <=', $today);
+			$this->db->where('akhir >=', $today);
 
-		$this->session->set_userdata('url', $th_ini . '/' . $bln_ini . '/' . $ket);
+			$this->db->order_by('awal', 'desc');
 
-		if ($ket == 'yes') {
-			$today = strtotime(date('Y-m-d'));
-			$minDay = date('Y-m-d', strtotime("-" . $setting->expired . " days", $today));
+			$cek = $this->db->get('semester')->row();
 
-			$where = [
-				'idUser'         => $this->dt_user->id,
-				'YEAR(tanggal)'  => $th_ini,
-				'MONTH(tanggal)' => $bln_ini,
-				'tanggal >='     => $minDay
-			];
+			$smt_ini = $cek->id;
 		} else {
-			$where = [
-				'idUser'         => $this->dt_user->id,
-				'YEAR(tanggal)'  => $th_ini,
-				'MONTH(tanggal)' => $bln_ini
-			];
+			$this->db->where('id', $smt_ini);
+			$cek = $this->db->get('semester')->row();
 		}
+
+		// echo $smt_ini;
+		// die;
+
+		$this->db->order_by('awal', 'desc');
+		$semester = $this->db->get('semester')->result();
+
+		$this->session->set_userdata('url', $smt_ini . '/filter');
+
+		// echo json_encode($semester);
+		// die;
+
+		$where = [
+			'idUser'     => $this->dt_user->id,
+			'tanggal >=' => $cek->awal,
+			'tanggal <=' => $cek->akhir
+		];
 
 		$data = [
-			'title'           => 'Data Parkir',
-			'sidebar'         => 'user/sidebar',
-			'navbar'          => 'user/navbar',
-			'page'            => 'user/dataParkir',
+			'title'             => 'Data Parkir',
+			'sidebar'           => 'user/sidebar',
+			'navbar'            => 'user/navbar',
+			'page'              => 'user/dataParkir',
 			'dataParkirHariIni' => $this->user->getDataParkirHariIni([
-				'idUser' => $this->dt_user->id,
-				'tanggal'   => date('Y-m-d')
+				'idUser'  => $this->dt_user->id,
+				'tanggal' => date('Y-m-d')
 			]),
-			'dataParkir' => $this->user->getDataParkir($where),
-			'tahun'   => $this->user->getTahun(),
-			'th_ini'  => $th_ini,
-			'bln_ini' => $bln_ini,
-			'ket'     => $ket
+			'dataParkir' => ($today >= $cek->awal && $today <= $cek->akhir) ? $this->user->getDataParkir($where) : [],
+			'tahun'      => $this->user->getTahun(),
+			'semester'   => $semester,
+			'smt_ini'    => $smt_ini
+			// 'th_ini'  => $th_ini,
+			// 'bln_ini' => $bln_ini,
+			// 'ket'     => $ket
 		];
 
 		$this->load->view('index', $data);
@@ -92,6 +95,25 @@ class Data extends CI_Controller
 
 		$this->load->view('index', $data);
 	}
+
+	// if ($ket == 'yes') {
+	// 	$today = strtotime(date('Y-m-d'));
+	// 	$minDay = date('Y-m-d', strtotime("-" . $setting->expired . " days", $today));
+
+	// 	$where = [
+	// 		'idUser'         => $this->dt_user->id,
+	// 		'YEAR(tanggal)'  => $th_ini,
+	// 		'MONTH(tanggal)' => $bln_ini,
+	// 		'tanggal >='     => $minDay
+	// 	];
+	// } else {
+	// 	$where = [
+	// 		'idUser'         => $this->dt_user->id,
+	// 		'YEAR(tanggal)'  => $th_ini,
+	// 		'MONTH(tanggal)' => $bln_ini
+	// 	];
+	// }
+
 }
 
 /* End of file Data.php */

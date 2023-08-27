@@ -20,24 +20,43 @@ class Data extends CI_Controller
 
 	public function index()
 	{
-		$th_ini  = $this->uri->segment(3);
-		$bln_ini = $this->uri->segment(4);
-		$ket     = $this->uri->segment(5);
+		// $th_ini  = $this->uri->segment(3);
+		// $bln_ini = $this->uri->segment(4);
+		$smt     = $this->uri->segment(3);
 
-		if (!$th_ini) {
-			$th_ini = $this->admin->getTahunIni();
-		}
+		$today = date('Y-m-d');
 
-		if (!$bln_ini) {
-			$bln_ini = $this->admin->getBulanIni($th_ini);
-		}
-		if (!$ket) {
-			$ket = 'yes';
+		$cek = null;
+
+		// if (!$th_ini) {
+		// 	$th_ini = $this->admin->getTahunIni();
+		// }
+
+		// if (!$bln_ini) {
+		// 	$bln_ini = $this->admin->getBulanIni($th_ini);
+		// }
+
+		if (!$smt) {
+			$this->db->where('awal <=', $today);
+			$this->db->where('akhir >=', $today);
+
+			$this->db->order_by('awal', 'desc');
+
+			$cek = $this->db->get('semester')->row();
+
+			$smt = $cek->id;
+		} else {
+			$this->db->where('id', $smt);
+			$cek = $this->db->get('semester')->row();
 		}
 
 		$setting = $this->db->get('setting')->row();
 
-		$this->session->set_userdata('url', $th_ini . '/' . $bln_ini . '/' . $ket);
+		$this->db->order_by('awal', 'desc');
+		$semester = $this->db->get('semester')->result();
+
+		// $this->session->set_userdata('url', $th_ini . '/' . $bln_ini . '/' . $smt);
+		$this->session->set_userdata('url', $smt . '/filter');
 
 		$data = [
 			'title'             => 'Rekap Parkir',
@@ -46,11 +65,15 @@ class Data extends CI_Controller
 			'page'              => 'admin/data_parkir',
 			'tahun'             => $this->admin->getTahun(),
 			'dataParkirHariIni' => $this->admin->getDataParkir(date('Y'), date('m'), date('d')),
-			'riwayatParkir'     => $this->admin->getDataParkir($th_ini, $bln_ini, null, $ket, $setting->expired),
-			'th_ini'            => $th_ini,
-			'bln_ini'           => $bln_ini,
-			'ket'               => $ket
+			'riwayatParkir'     => ($today >= $cek->awal && $today <= $cek->akhir) ? $this->admin->getDataParkir(null, null, null, $cek, $setting->expired) : [],
+			'semester'          => $semester,
+			// 'th_ini'            => $th_ini,
+			// 'bln_ini'           => $bln_ini,
+			'smt_ini'           => $smt
 		];
+
+		// echo json_encode($data['riwayatParkir']);
+		// die;
 
 		$this->load->view('index', $data);
 	}
